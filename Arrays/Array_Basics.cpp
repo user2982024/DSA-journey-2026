@@ -158,3 +158,5 @@ int main() {
 
     return 0;
 }
+
+// These are the basics of array that will act as a foundation for problem solving. (Revision)
