@@ -1,7 +1,21 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Function to reverse a string using two pointers
+/*
+    Problem: Reverse a String
+    Source: Love Babbar DSA Sheet (Strings - Q1)
+
+    Approach:
+    → Use the two-pointer technique.
+    → Initialize two pointers, start at the beginning and end at the last character.
+    → Swap the characters at start and end, then move pointers towards the center.
+    → Continue until start >= end.
+    → This reverses the string in place.
+
+    Time Complexity: O(n) — each character is visited once
+    Space Complexity: O(1) — no extra space used apart from a few variables
+*/
+
 string reverseString(string &s) {
     int start = 0;
     int end = s.length() - 1;
