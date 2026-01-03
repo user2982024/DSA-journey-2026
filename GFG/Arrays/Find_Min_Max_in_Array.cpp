@@ -26,6 +26,7 @@ vector<int> getMinMax(vector<int> &arr) {
     }
     
     vector<int> ans(2);
+    
     ans[0] = minValue;
     ans[1] = maxValue;
     
