@@ -2,8 +2,7 @@
 // Author: Sheikh Abrar
 // Description: Rotate an array cyclically by one position to the right in-place.
 
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Solution {

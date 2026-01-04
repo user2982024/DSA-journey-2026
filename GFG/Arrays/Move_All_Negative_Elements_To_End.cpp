@@ -3,8 +3,7 @@
 // Description: Move all negative elements to the end of an array 
 //              while preserving the relative order of positive and negative numbers.
 
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Solution {

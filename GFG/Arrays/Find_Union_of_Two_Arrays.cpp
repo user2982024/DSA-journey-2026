@@ -8,9 +8,7 @@
 //   4. Insert all elements from the second array into the set.
 //   5. Convert the set into a vector and return it.
 
-#include <iostream>
-#include <vector>
-#include <set>
+#include <bits/stdc++.h>
 using namespace std;
 
 class Solution {
