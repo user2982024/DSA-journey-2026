@@ -51,6 +51,9 @@ public:
             else if (freqMap[i] > 1) {
                 repeating = i;    // appears twice → repeating
             }
+            if (repeating != 0 && missing != 0) {
+                break;
+            }
         }
 
         ans[0] = repeating;
