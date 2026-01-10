@@ -1,70 +1,85 @@
 // ============================================================
 // Problem: Rearrange array in alternating positive & negative numbers
 // Constraint: Preserve the original order of positives and negatives
-// Goal: Alternate positive and negative elements as much as possible
+// Approach: Use two auxiliary arrays to store positives and negatives,
+//           then merge them back into the original array alternately.
 // ============================================================
 
 #include <bits/stdc++.h>
 using namespace std;
 
 class Solution {
-public:
+  public:
     /*
      * Function: rearrange
      * -------------------
-     * Rearranges the given array so that positive and negative numbers
-     * alternate. Order of appearance of positives and negatives is preserved.
+     * Rearranges the given array such that positive and negative numbers
+     * alternate. Preserves the relative order of positives and negatives.
      *
      * Parameters:
-     *   arr - reference to the vector of integers to be rearranged
+     *   arr - reference to the vector of integers to rearrange
      *
      * Approach:
-     *   1. Separate all positive and negative numbers into two arrays
-     *      while maintaining their original order.
-     *   2. Merge them back into the original array alternately:
-     *      positive, negative, positive, negative, ...
-     *   3. If one array is exhausted, append remaining elements from the
-     *      other array.
+     *   1. Create two auxiliary arrays: positive[] and negative[]
+     *      to store the numbers separately while preserving order.
+     *   2. Use indices j and k to traverse positive[] and negative[]
+     *      while merging them alternately back into arr[].
+     *   3. If any numbers remain in either array after alternation,
+     *      append them at the end.
      *
      * Time Complexity: O(n)
-     *   - One pass to separate positives and negatives -> O(n)
-     *   - One pass to merge them alternately -> O(n)
-     *   - Total = O(n + n) = O(n)
-     *
+     *   - One pass to separate positives and negatives
+     *   - One pass to merge alternately
      * Space Complexity: O(n)
-     *   - Two extra vectors to store positives and negatives
-     *   - Cannot reduce space while preserving order
+     *   - Extra space for positive[] and negative[]
+     *   - Required to preserve original relative order
      */
     void rearrange(vector<int> &arr) {
-        vector<int> positive;  // stores positive numbers
-        vector<int> negative;  // stores negative numbers
+        vector<int> positive;
+        vector<int> negative;
 
         // Step 1: Separate positive and negative numbers
-        for (int num : arr) {
-            if (num >= 0)
-                positive.push_back(num);
-            else
-                negative.push_back(num);
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr[i] >= 0) {
+                positive.push_back(arr[i]);
+            } else if (arr[i] < 0) {
+                negative.push_back(arr[i]);
+            }
         }
 
-        int i = 0;              // Index for main array
-        int posIdx = 0, negIdx = 0;
+        // Step 2: Merge them alternately back into arr
+        int i = 0;          // index for main array
+        int j = 0;          // index for positive[]
+        int k = 0;          // index for negative[]
         int n = positive.size();
         int m = negative.size();
 
-        // Step 2: Merge them alternately
-        while (posIdx < n && negIdx < m) {
-            arr[i++] = positive[posIdx++];
-            arr[i++] = negative[negIdx++];
+        while (j < n && k < m) {
+            arr[i] = positive[j];
+            i ++;
+            j ++;
+            arr[i] = negative[k];
+            i ++;
+            k ++;
         }
-
-        // Step 3: Append remaining positives if any
-        while (posIdx < n)
-            arr[i++] = positive[posIdx++];
-
-        // Step 4: Append remaining negatives if any
-        while (negIdx < m)
-            arr[i++] = negative[negIdx++];
+        
+        // Step 3: Append remaining positives, if any
+        if (!positive.empty()) {
+            while (j < n) {
+                arr[i] = positive[j];
+                i ++;
+                j ++;
+            }
+        }
+        
+        // Step 4: Append remaining negatives, if any
+        if (!negative.empty()) {
+            while (k < m) {
+                arr[i] = negative[k];
+                i ++;
+                k ++;
+            }
+        }
     }
 };
 
@@ -83,26 +98,27 @@ public:
 //   i=5 -> -5
 //   i=6 -> 0
 //   i=7 -> -3
-//   i=8 -> 2 (remaining positive)
+//   i=8 -> 2
 // Output: [9, -2, 4, -1, 5, -5, 0, -3, 2]
 // ============================================================
 
 // ============================================================
 // Edge Cases Considered:
-// 1. All positive numbers -> remains unchanged
-// 2. All negative numbers -> remains unchanged
+// 1. All positives -> array remains as is
+// 2. All negatives -> array remains as is
 // 3. Zeros included -> treated as positive (>=0)
-// 4. Unequal numbers of positives & negatives -> remaining elements appended
+// 4. Unequal counts -> remaining elements appended at end
 // ============================================================
 
 int main() {
     vector<int> arr = {9, 4, -2, -1, 5, 0, -5, -3, 2};
-    Solution obj;
-    obj.rearrange(arr);
+    Solution sol;
+    sol.rearrange(arr);
 
     cout << "Rearranged array: ";
-    for (int x : arr)
+    for (int x : arr) {
         cout << x << " ";
+    }
     cout << endl;
 
     return 0;
@@ -114,14 +130,15 @@ Complexity Analysis:
 Time Complexity:
 - O(n) to separate positives and negatives
 - O(n) to merge alternately
-=> Overall: O(n)
+=> Total = O(n)
 
 Space Complexity:
-- O(n) extra space for two auxiliary arrays
-- Stable order requires extra space
-=> Overall: O(n)
+- O(n) extra space for positive[] and negative[]
+- Required to preserve original relative order
+=> Total = O(n)
 
 Stability:
-- Preserves the original relative order of positives and negatives
-- Cannot achieve in-place stable rearrangement
+- Preserves the relative order of positive numbers
+- Preserves the relative order of negative numbers
+- Cannot be done in-place while preserving order
 */
