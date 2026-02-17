@@ -1,40 +1,122 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 /*
-    Problem: Reverse a String
-    Source: Love Babbar DSA Sheet (Strings - Q1)
+===============================================================
+Problem: Reverse a String (In-place)
+Sheet: Love Babbar 450 DSA Sheet
+Question Number: 1
+Topic: Arrays / Strings / Two Pointers
+Difficulty: Easy
+Author: Sheikh Abrar
+Journey: 100 Days of DSA
+===============================================================
 
-    Approach:
-    → Use the two-pointer technique.
-    → Initialize two pointers, start at the beginning and end at the last character.
-    → Swap the characters at start and end, then move pointers towards the center.
-    → Continue until start >= end.
-    → This reverses the string in place.
+🧩 Problem Statement:
+Given a string, reverse it in place and return the reversed string.
 
-    Time Complexity: O(n) — each character is visited once
-    Space Complexity: O(1) — no extra space used apart from a few variables
+Example:
+Input:  "hello"
+Output: "olleh"
+
+---------------------------------------------------------------
+🧠 Approach: Two Pointer Technique (Optimal)
+
+We use two pointers:
+- One at the beginning of the string
+- One at the end of the string
+
+We swap the characters at both positions and move inward.
+
+Steps:
+1. Initialize start = 0 and end = length - 1
+2. Swap characters at start and end
+3. Increment start and decrement end
+4. Continue until start < end
+
+Why start < end and NOT start <= end?
+If the string length is odd, when start == end,
+both pointers point to the middle element.
+
+Swapping an element with itself is unnecessary,
+so we avoid an extra redundant swap.
+
+---------------------------------------------------------------
+🔍 Dry Run:
+
+String = "abcde"
+
+start = 0, end = 4 → swap a ↔ e → ebcda
+start = 1, end = 3 → swap b ↔ d → edcba
+start = 2, end = 2 → stop
+
+Final = "edcba"
+
+---------------------------------------------------------------
+⏱ Time Complexity:
+O(n)
+We traverse roughly half the string, but in Big-O → O(n)
+
+🧠 Space Complexity:
+O(1)
+Reversal is done in-place with no extra memory.
+
+---------------------------------------------------------------
+✅ Edge Cases Handled:
+- Empty string
+- Single character string
+- Even length string
+- Odd length string
+- Special characters
+
+---------------------------------------------------------------
+⭐ Key Learning:
+Two-pointer technique is widely used for:
+- Reversal problems
+- Palindrome checking
+- Pair searching
+- Partitioning problems
+
+===============================================================
 */
 
-string reverseString(string &s) {
-    int start = 0;
-    int end = s.length() - 1;
+#include <iostream>
+#include <string>
+using namespace std;
 
-    while (start < end) {
-        swap(s[start], s[end]);
-        start++;
-        end--;
+class Solution {
+public:
+    string reverseString(string &s) {
+
+        // Length of string
+        int n = s.length();
+
+        // Two pointers
+        int left = 0;
+        int right = n - 1;
+
+        // Swap characters while pointers don't meet
+        while (left < right) {
+            swap(s[left], s[right]);
+            left++;
+            right--;
+        }
+
+        return s;
     }
-    return s;
-}
+};
 
 int main() {
-    string s;
-    cout << "Enter a string: ";
-    getline(cin, s);
 
-    string result = reverseString(s);
-    cout << "Reversed string: " << result << endl;
+    Solution obj;
+
+    string s;
+
+    cout << "Enter a string: ";
+    cin >> s;
+
+    cout << "Original string: " << s << endl;
+
+    string reversed = obj.reverseString(s);
+
+    cout << "Reversed string: " << reversed << endl;
 
     return 0;
 }
