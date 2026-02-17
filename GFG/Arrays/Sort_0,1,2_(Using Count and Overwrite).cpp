@@ -114,18 +114,21 @@ Avoid unnecessary data structures.
 #include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    void sort012(vector<int>& arr) {
+    void sort012(vector<int> &arr)
+    {
 
         int zerosCount = 0;
-        int onesCount  = 0;
-        int twosCount  = 0;
+        int onesCount = 0;
+        int twosCount = 0;
 
         int n = arr.size();
 
         // Step 1: Count occurrences
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++)
+        {
             if (arr[i] == 0)
                 zerosCount++;
             else if (arr[i] == 1)
@@ -150,7 +153,8 @@ public:
     }
 };
 
-int main() {
+int main()
+{
 
     Solution obj;
 
@@ -176,65 +180,155 @@ int main() {
 }
 
 // Using dutch national flag
-class Solution {
-  public:
-    void sort012(vector<int>& arr) {
+class Solution
+{
+public:
+    void sort012(vector<int> &arr)
+    {
         // code here
-        
+
         int n = arr.size();
-        int low = 0; 
+        int low = 0;
         int mid = 0;
         int high = n - 1;
-        
-        while (mid <= high) {
-            if (arr[mid] == 0) {
+
+        while (mid <= high)
+        {
+            if (arr[mid] == 0)
+            {
                 swap(arr[mid], arr[low]);
-                low ++;
-                mid ++;
+                low++;
+                mid++;
             }
-            
-            else if (arr[mid] == 1) {
-                mid ++;
+
+            else if (arr[mid] == 1)
+            {
+                mid++;
             }
-            
-            else {
+
+            else
+            {
                 swap(arr[mid], arr[high]);
-                high --;
+                high--;
             }
         }
-        
-        
-        
-        
+
         // Counting approach
-        
+        /*
+====================================================================
+Problem: Sort an Array of 0s, 1s and 2s
+Sheet: Love Babbar 450 DSA Sheet
+Question Number: 4
+Topic: Arrays / Partitioning / Dutch National Flag Algorithm
+Difficulty: Medium
+Author: Sheikh Abrar
+Journey: 100 Days of DSA
+====================================================================
+
+🧩 Problem Statement:
+Given an array consisting only of values 0, 1, and 2,
+sort the array in ascending order in-place.
+
+Example:
+Input:  [2, 0, 2, 1, 1, 0]
+Output: [0, 0, 1, 1, 2, 2]
+
+--------------------------------------------------------------------
+🧠 Optimal Approach: Dutch National Flag Algorithm (DNF)
+
+This algorithm sorts the array in a SINGLE PASS using three pointers.
+
+We partition the array into four regions:
+
+0 ........ low-1        → all 0s (processed)
+low ...... mid-1        → all 1s (processed)
+mid ...... high         → unknown (currently processing)
+high+1 ... n-1          → all 2s (processed)
+
+--------------------------------------------------------------------
+🎯 Pointer Meaning
+
+low  → next position where 0 should be placed
+mid  → current element being examined
+high → next position where 2 should be placed
+
+--------------------------------------------------------------------
+⚙ Processing Rules
+
+While mid <= high:
+
+1️⃣ If arr[mid] == 0
+    Swap with arr[low]
+    low++
+    mid++
+    (0 placed correctly on left)
+
+2️⃣ If arr[mid] == 1
+    mid++
+    (1 already in correct middle region)
+
+3️⃣ If arr[mid] == 2
+    Swap with arr[high]
+    high--
+    (mid NOT incremented because swapped element is unprocessed)
+
+--------------------------------------------------------------------
+🔍 Why mid is NOT incremented when value = 2 ?
+
+Because after swapping with high,
+the element coming into mid is from the unknown region.
+It must be checked again.
+
+--------------------------------------------------------------------
+⏱ Time Complexity:
+O(n) — single traversal of array
+
+--------------------------------------------------------------------
+🧠 Space Complexity:
+O(1) — in-place sorting, no extra memory
+
+--------------------------------------------------------------------
+⭐ Alternative Approach (Simpler but not single pass):
+Counting occurrences of 0, 1, 2 and reconstructing array.
+
+That requires two passes.
+Dutch National Flag is optimal.
+
+--------------------------------------------------------------------
+⭐ Key Learning:
+This is a classic in-place partitioning algorithm.
+Same idea used in quicksort partitioning and 3-way partition problems.
+
+====================================================================
+*/
+
         // int zerosCount = 0;
         // int onesCount = 0;
         // int twosCount = 0;
         // int n = arr.size();
-        
+
         // for (int i = 0; i < n; i ++) {
         //     if (arr[i] == 0) {
         //         zerosCount ++;
         //     }
-            
+
         //     if (arr[i] == 1) {
         //         onesCount ++;
         //     }
-            
+
         //     if (arr[i] == 2) {
         //         twosCount ++;
         //     }
         // }
-        
+
         // for (int i = 0; i < zerosCount; i ++) {
         //     arr[i] = 0;
         // }
-        
+
         // for (int i = zerosCount; i < zerosCount + onesCount; i ++) {
         //     arr[i] = 1;
         // }
-        
+
         // for (int i = zerosCount + onesCount; i < n; i ++) {
         //     arr[i] = 2;
         // }
