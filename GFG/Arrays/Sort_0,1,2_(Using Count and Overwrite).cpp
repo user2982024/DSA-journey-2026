@@ -1,66 +1,175 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 /*
-    Problem: Sort an array containing only 0s, 1s, and 2s
-    Source: Love Babbar DSA Sheet (Arrays - Q4)
+====================================================================
+Problem: Sort an Array of 0s, 1s and 2s
+Sheet: Love Babbar 450 DSA Sheet
+Question Number: 4
+Topic: Arrays / Counting / In-place Reconstruction
+Difficulty: Easy–Medium
+Author: Sheikh Abrar
+Journey: 100 Days of DSA
+====================================================================
 
-    Approach:
-    → Count the number of 0s, 1s, and 2s in the array.
-    → Overwrite the array:
-        • First 'count_0' elements with 0
-        • Next 'count_1' elements with 1
-        • Remaining 'count_2' elements with 2
-    → This is an in-place, 2-pass solution.
+🧩 Problem Statement:
+Given an array consisting only of values 0, 1, and 2,
+sort the array in ascending order.
 
-    Time Complexity: O(n) — first pass counts, second pass overwrites
-    Space Complexity: O(1) — only 3 integer counters used
+Example:
+Input:  [0, 2, 1, 2, 0]
+Output: [0, 0, 1, 2, 2]
+
+--------------------------------------------------------------------
+🧠 Approach Used: Counting + Region Reconstruction
+
+Since the array contains only three possible values (0, 1, 2),
+we do NOT need a general sorting algorithm.
+
+Instead:
+1. Count how many 0s, 1s, and 2s exist.
+2. Overwrite the array in sorted order using counts.
+
+--------------------------------------------------------------------
+📌 Why Not Use HashMap?
+Values are already known and limited to {0,1,2}.
+Using hashmap would add unnecessary overhead.
+
+Counting with three variables is simpler and faster.
+
+--------------------------------------------------------------------
+📌 Why Not Use std::sort()?
+std::sort() takes O(n log n),
+but this problem can be solved in O(n).
+
+--------------------------------------------------------------------
+📌 How Reconstruction Works
+
+If:
+zeros = 2
+ones  = 1
+twos  = 2
+
+Final array should be:
+[0, 0, 1, 2, 2]
+
+We fill array in three regions:
+
+Index range:
+[0 → zeros-1]                     → fill 0
+[zeros → zeros+ones-1]            → fill 1
+[zeros+ones → n-1]                → fill 2
+
+Each index written exactly once.
+
+--------------------------------------------------------------------
+🔍 Dry Run
+
+arr = [0, 2, 1, 2, 0]
+
+Counting:
+zeros = 2
+ones  = 1
+twos  = 2
+
+Reconstruction:
+[0, 0, 1, 2, 2]
+
+--------------------------------------------------------------------
+⏱ Time Complexity:
+Counting pass        → O(n)
+Reconstruction pass  → O(n)
+
+Total → O(n)
+
+--------------------------------------------------------------------
+🧠 Space Complexity:
+O(1)
+Only three counters used.
+Sorting done in-place.
+
+--------------------------------------------------------------------
+⭐ Interview Note (Important)
+
+This is a correct and efficient solution.
+
+However, the optimal single-pass solution is:
+"Dutch National Flag Algorithm"
+
+Which partitions array in one traversal using
+three pointers (low, mid, high).
+
+This counting approach is simpler and acceptable,
+but Dutch National Flag is more optimal in practice.
+
+--------------------------------------------------------------------
+⭐ Key Learning:
+
+When values are from a small fixed range,
+counting + reconstruction is powerful and simple.
+
+Avoid unnecessary data structures.
+
+====================================================================
 */
+
+#include <iostream>
+#include <vector>
+using namespace std;
 
 class Solution {
 public:
     void sort012(vector<int>& arr) {
-        int count_0 = 0;
-        int count_1 = 0;
-        int count_2 = 0;
 
-        // Count 0s, 1s, and 2s
-        for (int i = 0; i < arr.size(); i++) {
-            if (arr[i] == 0) count_0++;
-            else if (arr[i] == 1) count_1++;
-            else count_2++;
+        int zerosCount = 0;
+        int onesCount  = 0;
+        int twosCount  = 0;
+
+        int n = arr.size();
+
+        // Step 1: Count occurrences
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == 0)
+                zerosCount++;
+            else if (arr[i] == 1)
+                onesCount++;
+            else
+                twosCount++;
         }
 
-        // Overwrite array with 0s
-        for (int i = 0; i < count_0; i++)
+        // Step 2: Reconstruct array in sorted order
+
+        // Fill 0s
+        for (int i = 0; i < zerosCount; i++)
             arr[i] = 0;
 
-        // Overwrite array with 1s
-        for (int i = count_0; i < count_0 + count_1; i++)
+        // Fill 1s
+        for (int i = zerosCount; i < zerosCount + onesCount; i++)
             arr[i] = 1;
 
-        // Overwrite array with 2s
-        for (int i = count_0 + count_1; i < count_0 + count_1 + count_2; i++)
+        // Fill 2s
+        for (int i = zerosCount + onesCount; i < n; i++)
             arr[i] = 2;
     }
 };
 
 int main() {
+
+    Solution obj;
+
     int n;
     cout << "Enter number of elements: ";
     cin >> n;
 
     vector<int> arr(n);
-    cout << "Enter array elements (0, 1, or 2 only):\n";
+
+    cout << "Enter elements (only 0,1,2): ";
     for (int i = 0; i < n; i++)
         cin >> arr[i];
 
-    Solution sol;
-    sol.sort012(arr);
+    obj.sort012(arr);
 
     cout << "Sorted array: ";
     for (int x : arr)
         cout << x << " ";
+
     cout << endl;
 
     return 0;
