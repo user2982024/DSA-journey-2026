@@ -174,3 +174,69 @@ int main() {
 
     return 0;
 }
+
+// Using dutch national flag
+class Solution {
+  public:
+    void sort012(vector<int>& arr) {
+        // code here
+        
+        int n = arr.size();
+        int low = 0; 
+        int mid = 0;
+        int high = n - 1;
+        
+        while (mid <= high) {
+            if (arr[mid] == 0) {
+                swap(arr[mid], arr[low]);
+                low ++;
+                mid ++;
+            }
+            
+            else if (arr[mid] == 1) {
+                mid ++;
+            }
+            
+            else {
+                swap(arr[mid], arr[high]);
+                high --;
+            }
+        }
+        
+        
+        
+        
+        // Counting approach
+        
+        // int zerosCount = 0;
+        // int onesCount = 0;
+        // int twosCount = 0;
+        // int n = arr.size();
+        
+        // for (int i = 0; i < n; i ++) {
+        //     if (arr[i] == 0) {
+        //         zerosCount ++;
+        //     }
+            
+        //     if (arr[i] == 1) {
+        //         onesCount ++;
+        //     }
+            
+        //     if (arr[i] == 2) {
+        //         twosCount ++;
+        //     }
+        // }
+        
+        // for (int i = 0; i < zerosCount; i ++) {
+        //     arr[i] = 0;
+        // }
+        
+        // for (int i = zerosCount; i < zerosCount + onesCount; i ++) {
+        //     arr[i] = 1;
+        // }
+        
+        // for (int i = zerosCount + onesCount; i < n; i ++) {
+        //     arr[i] = 2;
+        // }
+    }
+};
