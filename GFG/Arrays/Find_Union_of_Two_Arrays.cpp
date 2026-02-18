@@ -1,86 +1,207 @@
-// File: union_of_arrays.cpp
-// Author: Sheikh Abrar
-// Description: Find the union of two unsorted arrays and return it as a sorted vector.
-// Approach: 
-//   1. Use a set to store unique elements from both arrays.
-//   2. A set automatically removes duplicates and keeps elements sorted.
-//   3. Insert all elements from the first array into the set.
-//   4. Insert all elements from the second array into the set.
-//   5. Convert the set into a vector and return it.
+/*
+===============================================================================
+PROBLEM: Union of Two Arrays
 
-#include <bits/stdc++.h>
+SOURCE: Love Babbar DSA Sheet (Array Section)
+
+STATEMENT:
+Given two arrays a[] and b[], return a vector containing the UNION of elements
+present in both arrays.
+
+Union means:
+- All unique elements from both arrays
+- No duplicates
+- Order is sorted automatically if using set (not mandatory unless specified)
+
+-------------------------------------------------------------------------------
+EXAMPLE:
+
+Input:
+a = [1, 2, 3, 4]
+b = [3, 4, 5, 6]
+
+Output:
+[1, 2, 3, 4, 5, 6]
+
+-------------------------------------------------------------------------------
+MY APPROACH (STUDENT APPROACH)
+
+Idea:
+Use a set to automatically:
+1. Remove duplicates
+2. Keep elements sorted
+3. Insert all elements from both arrays
+
+Steps:
+1. Traverse first array → insert into set
+2. Traverse second array → insert into set
+3. Convert set to vector and return
+
+This is simple and reliable for unsorted arrays.
+
+-------------------------------------------------------------------------------
+MY PERFORMANCE (PERSONAL LEARNING NOTE)
+
+Previous problem time → 47 minutes
+This problem time     → 3 minutes
+
+Insight:
+Pattern recognition improved.
+Confidence in STL usage improved.
+Understanding of uniqueness handling improved.
+
+-------------------------------------------------------------------------------
+COMMON MISTAKE / CONCEPTUAL CORRECTION
+
+Initially I thought:
+
+Time Complexity = O(n + m)
+
+But this is NOT fully correct.
+
+WHY?
+
+Because std::set is implemented using a balanced binary search tree.
+
+Each insertion takes:
+O(log k)
+
+where k = current size of set.
+
+Total insertions = (n + m)
+
+So actual time complexity:
+
+O((n + m) log(n + m))
+
+This is a very important interview-level correction.
+
+-------------------------------------------------------------------------------
+TIME COMPLEXITY
+
+Insert elements of both arrays:
+(n + m) insertions × log(n + m)
+
+FINAL:
+O((n + m) log(n + m))
+
+-------------------------------------------------------------------------------
+SPACE COMPLEXITY
+
+Set stores unique elements → up to (n + m)
+
+Vector output also stores union.
+
+FINAL:
+O(n + m)
+
+-------------------------------------------------------------------------------
+EDGE CASES HANDLED
+
+✔ One array empty
+✔ Both arrays empty
+✔ All elements same
+✔ Negative values
+✔ Large arrays
+✔ Unsorted input
+
+-------------------------------------------------------------------------------
+DRY RUN
+
+a = [2, 1, 2]
+b = [1, 3, 4]
+
+Insert from a:
+set = {1, 2}
+
+Insert from b:
+set = {1, 2, 3, 4}
+
+Convert to vector:
+[1, 2, 3, 4]
+
+-------------------------------------------------------------------------------
+INTERVIEW INSIGHT (VERY IMPORTANT)
+
+If arrays are already sorted:
+Better approach = Two pointer merge
+Time = O(n + m)
+Space = O(1) extra (excluding output)
+
+Set approach is preferred when:
+✔ Arrays are unsorted
+✔ Simplicity required
+✔ No in-place constraint
+
+-------------------------------------------------------------------------------
+ALGORITHM SUMMARY
+
+Use ordered set to collect unique elements from both arrays
+Return elements as vector
+
+===============================================================================
+*/
+
+#include <iostream>
+#include <vector>
+#include <set>
 using namespace std;
 
 class Solution {
 public:
+
     vector<int> findUnion(vector<int>& a, vector<int>& b) {
-        // Step 1: Declare a set to store unique elements
-        set<int> unionSet; // set automatically sorts elements in ascending order
 
-        // Step 2: Insert elements from the first array into the set
-        for (int i = 0; i < a.size(); i++) {
-            // Insertion into a set costs O(log k) where k = current set size
-            unionSet.insert(a[i]);
+        set<int> uniqueElements;
+
+        int n = a.size();
+        int m = b.size();
+
+        // Insert elements of first array
+        for (int i = 0; i < n; i++) {
+            uniqueElements.insert(a[i]);
         }
 
-        // Step 3: Insert elements from the second array into the set
-        for (int j = 0; j < b.size(); j++) {
-            // Set will ignore duplicates automatically
-            unionSet.insert(b[j]);
+        // Insert elements of second array
+        for (int j = 0; j < m; j++) {
+            uniqueElements.insert(b[j]);
         }
 
-        // Step 4: Convert the set into a vector
-        // Copying all n + m elements into a vector costs O(n + m)
-        return vector<int>(unionSet.begin(), unionSet.end());
+        // Convert set to vector
+        vector<int> result(uniqueElements.begin(), uniqueElements.end());
+
+        return result;
     }
 };
 
-// Helper function to print a vector
-void printVector(const vector<int>& v) {
-    for (int num : v) {
-        cout << num << " ";
-    }
-    cout << endl;
-}
 
-// Example usage
+// -----------------------------------------------------------------------------
+// DRIVER CODE (LOCAL TESTING)
+// -----------------------------------------------------------------------------
 int main() {
-    Solution sol;
 
-    // Example arrays
-    vector<int> arr1 = {5, 3, 8, 3, 2};
-    vector<int> arr2 = {7, 2, 8, 1};
+    vector<int> a;
+    a.push_back(1);
+    a.push_back(2);
+    a.push_back(3);
+    a.push_back(4);
 
-    cout << "Array 1: ";
-    printVector(arr1);
-    cout << "Array 2: ";
-    printVector(arr2);
+    vector<int> b;
+    b.push_back(3);
+    b.push_back(4);
+    b.push_back(5);
+    b.push_back(6);
 
-    // Step 5: Get union of both arrays
-    vector<int> result = sol.findUnion(arr1, arr2);
+    Solution obj;
+    vector<int> ans = obj.findUnion(a, b);
 
-    // Step 6: Print the sorted, unique union
-    cout << "Union of Array 1 and Array 2 (sorted, unique): ";
-    printVector(result);
+    cout << "Union: ";
+
+    for (int i = 0; i < ans.size(); i++) {
+        cout << ans[i] << " ";
+    }
+
+    cout << endl;
 
     return 0;
 }
-
-/*
-Complexity Analysis:
-- Time Complexity: 
-    * Insertion into set for array a: O(n log n)
-    * Insertion into set for array b: O(m log(n + m))
-    * Converting set to vector: O(n + m)
-    → Total: O((n + m) log(n + m))
-
-- Space Complexity:
-    * Set stores up to n + m elements: O(n + m)
-    * Result vector stores n + m elements: O(n + m)
-    → Total: O(n + m)
-
-Notes:
-- Works for unsorted arrays.
-- Set ensures no duplicates and elements are sorted.
-- Optimal for unsorted input arrays. 
-*/

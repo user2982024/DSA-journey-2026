@@ -113,43 +113,50 @@ So this is the correct optimal stable solution.
 #include <vector>
 using namespace std;
 
-class Solution {
+class Solution
+{
 public:
-    void segregateElements(vector<int>& arr) {
+    void segregateElements(vector<int> &arr)
+    {
         // Your code goes here
         vector<int> positive;
         vector<int> negative;
         int n = arr.size();
-        
-        for (int i = 0; i < n; i ++) {
-            if (arr[i] >= 0) {
+
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] >= 0)
+            {
                 positive.push_back(arr[i]);
             }
-            
-            else {
+
+            else
+            {
                 negative.push_back(arr[i]);
             }
         }
-        
+
         int index = 0;
-        
-        for (int i = 0; i < positive.size(); i ++) {
+
+        for (int i = 0; i < positive.size(); i++)
+        {
             arr[index] = positive[i];
-            index ++;
+            index++;
         }
-        
-        for (int i = 0; i < negative.size(); i ++) {
+
+        for (int i = 0; i < negative.size(); i++)
+        {
             arr[index] = negative[i];
-            index ++;
+            index++;
         }
     }
 };
 
-
 // -----------------------------------------------------------------------------
 // DRIVER CODE (for local testing)
 // -----------------------------------------------------------------------------
-int main() {
+int main()
+{
 
     vector<int> arr = {3, -1, 4, -2, 5};
 
