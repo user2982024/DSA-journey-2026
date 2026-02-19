@@ -1,11 +1,87 @@
-// File: max_subarray_sum.cpp
-// Author: Sheikh Abrar
-// Description: Find the largest sum contiguous subarray using intuitive Kadane's logic.
-// Approach: 
-//   Traverse the array once, keep adding elements to a running sum (currentSum).
-//   If at any point currentSum becomes negative, reset it to zero because 
-//   negative values decrease our future sum and can't contribute to the maximum sum.
-//   Keep track of the largestSum found so far during the traversal.
+/*
+===============================================================
+PROBLEM: Maximum Subarray Sum (Kadane’s Algorithm)
+Platform: GeeksforGeeks / LeetCode (Classic Problem)
+Author: Sheikh Abrar (DSA Challenge)
+===============================================================
+
+PROBLEM STATEMENT
+-----------------
+Given an array of integers (positive, negative, or zero),
+find the contiguous subarray (containing at least one number)
+which has the maximum possible sum, and return that sum.
+
+This is known as the "Maximum Subarray Problem".
+
+---------------------------------------------------------------
+INTUITION
+---------------------------------------------------------------
+At every index, we must decide:
+
+1) Should we continue the previous subarray?
+2) Or should we start a new subarray from current element?
+
+If the running sum becomes negative, it will only reduce
+future subarray sums. So we discard it and restart.
+
+This greedy decision at every index forms Kadane’s Algorithm.
+
+---------------------------------------------------------------
+KEY OBSERVATIONS
+---------------------------------------------------------------
+1) Running sum (currentSum) tracks current subarray.
+2) largestSum tracks best answer so far.
+3) Update largestSum BEFORE resetting currentSum.
+4) Initialize largestSum = INT_MIN to handle all-negative arrays.
+
+---------------------------------------------------------------
+COMMON MISTAKES (IMPORTANT LEARNING)
+---------------------------------------------------------------
+Mistake 1:
+Resetting currentSum BEFORE updating largestSum.
+This fails for arrays with all negative numbers.
+
+Mistake 2:
+Initializing largestSum = 0.
+Wrong when all elements are negative.
+
+Correct approach:
+largestSum must start from INT_MIN.
+
+---------------------------------------------------------------
+EDGE CASES HANDLED
+---------------------------------------------------------------
+✔ Single element array
+✔ All negative numbers
+✔ All positive numbers
+✔ Mixed values
+✔ Large inputs
+
+---------------------------------------------------------------
+TIME COMPLEXITY
+---------------------------------------------------------------
+O(N) → Single traversal
+
+SPACE COMPLEXITY
+---------------------------------------------------------------
+O(1) → No extra space used
+
+---------------------------------------------------------------
+ALGORITHM STEPS
+---------------------------------------------------------------
+1) Initialize:
+      currentSum = 0
+      largestSum = INT_MIN
+
+2) Traverse array:
+      add element to currentSum
+      update largestSum
+      if currentSum < 0 → reset to 0
+
+3) Return largestSum
+
+===============================================================
+*/
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -13,21 +89,26 @@ using namespace std;
 class Solution {
 public:
     int maxSubarraySum(vector<int> &arr) {
-        // Handle single-element edge case
-        if (arr.size() == 1) {
-            return arr[0];
-        }
 
-        int largestSum = INT_MIN;  // Stores the maximum sum encountered so far
-        int currentSum = 0;        // Running sum of the current subarray
+        // Running sum of current subarray
+        int currentSum = 0;
 
-        for (int i = 0; i < arr.size(); i++) {
-            currentSum = currentSum + arr[i];   // Keep adding elements
-            largestSum = max(largestSum, currentSum);  // Update max if current sum is greater
+        // Best sum found so far (must handle negative arrays)
+        int largestSum = INT_MIN;
 
-            // Core condition:
-            // If the currentSum becomes negative, it means it's reducing our result.
-            // So, we reset it to zero to start a new subarray from the next element.
+        int n = arr.size();
+
+        for (int i = 0; i < n; i++) {
+
+            // Extend current subarray
+            currentSum += arr[i];
+
+            // Update best answer found so far
+            if (currentSum > largestSum) {
+                largestSum = currentSum;
+            }
+
+            // If running sum becomes harmful, discard it
             if (currentSum < 0) {
                 currentSum = 0;
             }
@@ -37,44 +118,24 @@ public:
     }
 };
 
-// Helper function to print result
-int main() {
-    Solution sol;
-
-    vector<int> arr = {-2, -3, 4, -1, -2, 1, 5, -3};
-
-    cout << "Array: ";
-    for (int num : arr) cout << num << " ";
-    cout << endl;
-
-    int maxSum = sol.maxSubarraySum(arr);
-
-    cout << "Maximum Subarray Sum: " << maxSum << endl;
-
-    return 0;
-}
-
 /*
-Explanation of Core Condition:
---------------------------------
-- When currentSum < 0:
-    We reset currentSum = 0 because a negative sum won't help in 
-    forming a maximum contiguous subarray. It only reduces our total.
-    In other words, if our running sum becomes negative, 
-    it's better to start fresh from the next index.
+===============================================================
+DRY RUN EXAMPLE
+---------------------------------------------------------------
+Array: [-2, -3, 4, -1, -2, 1, 5, -3]
 
-- When currentSum >= 0:
-    We continue adding values because we are still on a positive gain path.
+i=0 → current=-2 → largest=-2 → reset
+i=1 → current=-3 → largest=-2 → reset
+i=2 → current=4  → largest=4
+i=3 → current=3  → largest=4
+i=4 → current=1  → largest=4
+i=5 → current=2  → largest=4
+i=6 → current=7  → largest=7
+i=7 → current=4  → largest=7
 
-Key Points:
-------------
-* The line "if (currentSum < 0) currentSum = 0;" is the core logic.
-* The rest is just simple accumulation and comparison.
-* This algorithm ensures O(n) time and O(1) space.
-* Works efficiently for all integer arrays (positive, negative, mixed).
+Answer = 7
 
-Complexity:
------------
-Time Complexity: O(n)
-Space Complexity: O(1)
+Subarray = [4, -1, -2, 1, 5]
+
+===============================================================
 */
