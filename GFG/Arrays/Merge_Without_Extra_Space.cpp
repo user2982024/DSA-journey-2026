@@ -9,6 +9,7 @@ class Solution {
             a.push_back(b[i]);
         }
         
+        // sort the array
         sort(a.begin(), a.end());
         
         int index = 0;
