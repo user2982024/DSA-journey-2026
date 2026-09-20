@@ -1,4 +1,3 @@
-```cpp
 #include <iostream>
 #include <vector>
 #include <climits>
@@ -116,4 +115,3 @@ public:
     price and the maximum profit instead of simply finding
     the global minimum and maximum.
 */
-```
