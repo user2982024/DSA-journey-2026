@@ -1,0 +1,2 @@
+Queue:
+Queue allows us to add elements from the right side (from the back) and to remove the the elements from the left side (from the front).

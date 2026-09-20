@@ -1,0 +1,40 @@
+*** Insertion Sort: ***
+In insertion sort, what we are trying to achieve is that for each array element starting from index "1", we want that it must be at a place where all the elements on it's left side must be smaller than it. In this way we want to sort the array (in ascending order).
+
+*** Algorithm: ***
+Step 1: I created a variable "temp" to store the current value and another variable "j" that is responsible for shifting and assigned both the variables the value of "0". I started a "for loop" using iterator "i". I started "i" from index "1" and then moved it to index "n - 1". The iterator "i" is just for iterating through the input array. 
+
+Step 2: Inside the outer "for loop", we do "j = i - 1" because variable "j" will always be one step behind the variable "i". Then inside the outer "for loop", there is a condition "if (arr[i] < arr[j])", this is a check that whether we need to process this value or not? If it's true, the inside code will be executed and we will process the value. If it is false, we will simply move to the next iteration. 
+
+Step 3: If the condition "if (arr[i] < arr[j])" is true, then we will assign the current value to the "temp" variable. 
+
+Step 4: Now comes the inner while loop. We will do "while (arr[j] > temp && j >= 0)" to check whether the current value at "j" index is greater than the value inside "temp" variable and also if iterator "j" is greater then or equal to zero. If both conditions are satisfied then we will do the next shifting process.
+
+Step 5: After both the conditions of "while loop" are satisfied, we do "arr[j + 1] = arr[j]; j --;". This is the shifting logic. We are assigning the "j + 1" index the value of "j" index and then we are moving the "j" iterator backwards. The "while loop" will run until it encounters a value that is "less than or equal to" the value inside "temp" variable or the iterator "j" becomes less than "0".
+
+Step 6: After the termination of "while loop", now the iterator "j"  will be one step behind to the actual place where the value stored in the "temp" variable needs to be inserted to make the array sorted. We will insert the value and it would complete our one processed iteration of outer "for loop". Our algorithm will run "n" times until our input array is sorted. 
+
+*** Approach: ***
+I tried various solutions before reaching to the actual solution. Like using "arr[i - 1]", "arr[i]", but they didn't work. Because if we modify "i", we will loose the track of the indexing. S, eventually using "arr[j + 1]" is the ultimate solution. 
+
+And about "j" pointer, we initialize it as "j = i - 1", because we want to check for all the elements of array and we started "i" from "1" index because starting it from "0" would move j to "-1" or "out of bounds". Also we are doing "j --" because we want to place the current element on the place where all the left side elements are smaller than it to make sure that sorting is done perfectly. 
+
+*** Questions ***
+1. Why not "i = 0" and "j = 1" ?
+Ans. We can't use "i = 0" and "j = 1" because we want to sort the array in ascending order and we are shifting the larger elements to the right side and making space for the smaller current element on the left side and we are doing it by moving "j" pointer to the left so we need space on left side that's why "i" is started from "1" index and "j = i - 1".
+
+2. Why "j >= 0" and if it is necessary why not just "j > 0" ?
+Ans. Without this condition whether "j >= 0" or "j > 0", our "j" pointer could move to the left side unnecessarily. If there is a random out of bounds value that is still satisfying the condition "while (arr[j] > temp)" then it will move unneccessarily taking those out of bound values to account. It is an edge case that we need to handle. Now, why we used "j >= 0" and not just "j > 0" because for the "first" iteration of "outer for loop", there "i = 1" and "j = 0", therefore "j" is not strictly greater than 0. So, "j" will not move and it will cause our whole algorithm to crash. We used "j >= 0" here so that for the first iteration of "outer for loop", "j == 0" becomes true and so it could process the first value too. 
+
+3. Why while loop inside? Why not if condition ?
+Ans. I used "while loop" instead of just "if" because there would be cases where the current element being processed needs to move back more than once, may be three, four or five times or even more. So, for this we need a loop.
+
+*** For descending order insertion sort: ***
+If we want to sort an array in descending order in insertion sort, we just need to change two conditions. First one is "if (arr[i] > arr[j])" and the second one is "while (arr[j] < temp)". Because previously we weare checking for "if there is a greater element on the left side" but now we are checking for "if there is a smaller element on the left side".
+
+*** Edge Cases: ***
+1. "j >= 0", inside the while loop this condition is the most critical edge case in this algorithm.
+
+*** Complexity: ***
+Time Complexity = O(n^2).
+Space Complexity = O(1).

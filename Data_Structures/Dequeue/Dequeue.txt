@@ -1,0 +1,2 @@
+Dequeue:
+Dequeue allows us to add and remove elements from both ends. One end (the left end) is known as front and the other end (the right end) is known as back. It gives us functions like push_back(), push_front(), pop_back(), pop_front(), front(), back(), size() etc. These operations work in O(1) average time but have a higher constant values.
