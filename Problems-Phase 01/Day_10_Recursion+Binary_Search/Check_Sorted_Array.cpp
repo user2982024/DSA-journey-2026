@@ -1,74 +1,74 @@
 
 /*
 ==========================================================
-Problem: Reverse an Array Using Recursion
+Problem: Check if an Array Is Sorted
 Platform: GeeksforGeeks
-Topics: Recursion, Arrays, Two Pointers
+Topics: Recursion, Arrays
 Language: C++
 ==========================================================
 
 PROBLEM STATEMENT:
-Given an array of integers, reverse the array in place
-using recursion.
+Given an array of integers, determine whether the array
+is sorted in non-decreasing order using recursion.
 
-The first element should become the last element, the
-second element should become the second-last element,
-and so on.
+An array is sorted in non-decreasing order when every
+element is less than or equal to the element after it.
 
 Example 1:
 Input:
 arr = {1, 2, 3, 4, 5}
 
 Output:
-{5, 4, 3, 2, 1}
+true
+
+Explanation:
+Every element is less than or equal to the next element.
 
 
 Example 2:
 Input:
-arr = {10, 20, 30, 40}
+arr = {1, 2, 4, 3, 5}
 
 Output:
-{40, 30, 20, 10}
+false
+
+Explanation:
+The element 4 is greater than the next element 3.
 
 
 Example 3:
 Input:
-arr = {7}
+arr = {1, 1, 2, 2, 3}
 
 Output:
-{7}
+true
+
+Explanation:
+Equal adjacent elements are allowed.
+
 
 ==========================================================
-APPROACH: RECURSION + TWO POINTERS
+APPROACH: RECURSION
 ==========================================================
 
-We use two pointers:
-
-1. start:
-   Points to the first element that has not been processed.
-
-2. end:
-   Points to the last element that has not been processed.
-
-ALGORITHM:
+We use a helper function check(arr, i), where i is the
+index of the current element being checked.
 
 1. BASE CASE:
-   If start >= end, return.
+   If the array has zero or one element, it is sorted.
 
-   This means the pointers have met or crossed each other.
-   The entire array has been reversed.
+2. COMPARE ADJACENT ELEMENTS:
+   Compare arr[i] with arr[i + 1].
 
-2. SWAP:
-   Swap arr[start] and arr[end].
+   If arr[i] > arr[i + 1], return false because the
+   array is not sorted in non-decreasing order.
 
-3. MOVE THE POINTERS:
-   Move start one position forward.
-   Move end one position backward.
+3. RECURSIVE CALL:
+   If the current pair is correctly ordered, call
+   check(arr, i + 1) to check the next pair.
 
-4. RECURSIVE CALL:
-   Call reverse(arr, start + 1, end - 1).
-
-5. Repeat until the base case is reached.
+4. If all adjacent pairs are correctly ordered,
+   the function eventually returns true.
 
 ==========================================================
 CODE:
@@ -77,92 +77,146 @@ CODE:
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
 using namespace std;
 
 class Solution {
 public:
-    void reverse(vector<int>& arr, int start, int end) {
-        // Base case: pointers meet or cross
-        if (start >= end) {
-            return;
+    bool check(vector<int>& arr, int i) {
+        // Base case: no more adjacent pairs to check
+        if (i == static_cast<int>(arr.size()) - 1) {
+            return true;
         }
 
-        // Swap the elements at both ends
-        swap(arr[start], arr[end]);
+        // If the current pair is out of order, the array
+        // is not sorted in non-decreasing order
+        if (arr[i] > arr[i + 1]) {
+            return false;
+        }
 
-        // Recursively reverse the remaining inner portion
-        reverse(arr, start + 1, end - 1);
+        // Recursively check the next adjacent pair
+        return check(arr, i + 1);
     }
 
-    void reverseArray(vector<int>& arr) {
-        int n = arr.size();
+    bool isSorted(vector<int>& arr) {
+        // An empty array or a single-element array is sorted
+        if (arr.size() <= 1) {
+            return true;
+        }
 
-        int start = 0;
-        int end = n - 1;
+        int i = 0;
 
-        reverse(arr, start, end);
+        return check(arr, i);
     }
 };
 
 /*
 ==========================================================
-DRY RUN:
+DRY RUN 1: SORTED ARRAY
 ==========================================================
 
 Input:
-arr = {1, 2, 3, 4, 5}
+arr = {1, 2, 3, 4}
 
-Initial state:
-start = 0
-end   = 4
-
-Array:
-{1, 2, 3, 4, 5}
+Initial call:
+check(arr, 0)
 
 
 CALL 1:
 ----------------------------------------------------------
-reverse(arr, 0, 4)
+i = 0
 
-start < end, so swap arr[0] and arr[4].
+Compare:
+arr[0] > arr[1]
+1 > 2  -> false
 
-Swap:
-1 <-> 5
+The pair is correctly ordered.
 
-Array becomes:
-{5, 2, 3, 4, 1}
-
-Next recursive call:
-reverse(arr, 1, 3)
+Next call:
+check(arr, 1)
 
 
 CALL 2:
 ----------------------------------------------------------
-reverse(arr, 1, 3)
+i = 1
 
-start < end, so swap arr[1] and arr[3].
+Compare:
+arr[1] > arr[2]
+2 > 3  -> false
 
-Swap:
-2 <-> 4
+The pair is correctly ordered.
 
-Array becomes:
-{5, 4, 3, 2, 1}
-
-Next recursive call:
-reverse(arr, 2, 2)
+Next call:
+check(arr, 2)
 
 
 CALL 3:
 ----------------------------------------------------------
-reverse(arr, 2, 2)
+i = 2
 
-Here, start >= end.
+Compare:
+arr[2] > arr[3]
+3 > 4  -> false
 
-The base case is reached, so the function returns.
+The pair is correctly ordered.
 
-Final array:
-{5, 4, 3, 2, 1}
+Next call:
+check(arr, 3)
+
+
+CALL 4:
+----------------------------------------------------------
+i = 3
+
+i == arr.size() - 1
+
+The base case is reached.
+
+Return true.
+
+Final result:
+true
+
+
+==========================================================
+DRY RUN 2: UNSORTED ARRAY
+==========================================================
+
+Input:
+arr = {1, 3, 2, 4}
+
+Initial call:
+check(arr, 0)
+
+
+CALL 1:
+----------------------------------------------------------
+i = 0
+
+Compare:
+arr[0] > arr[1]
+1 > 3  -> false
+
+Continue:
+check(arr, 1)
+
+
+CALL 2:
+----------------------------------------------------------
+i = 1
+
+Compare:
+arr[1] > arr[2]
+3 > 2  -> true
+
+The array is not sorted.
+
+Return false immediately.
+
+The remaining elements do not need to be checked.
+
+Final result:
+false
+
 
 ==========================================================
 EDGE CASES:
@@ -171,93 +225,91 @@ EDGE CASES:
 1. EMPTY ARRAY:
    arr = {}
 
-   start = 0
-   end = -1
+   Output: true
 
-   Since start >= end, the function returns immediately.
-
-   Output:
-   {}
+   An empty array is considered sorted because there
+   are no adjacent pairs violating the sorted condition.
 
 
 2. SINGLE ELEMENT:
    arr = {7}
 
-   start = 0
-   end = 0
+   Output: true
 
-   Since start >= end, no swap is needed.
-
-   Output:
-   {7}
+   No adjacent pair exists to violate the condition.
 
 
-3. TWO ELEMENTS:
-   arr = {1, 2}
-
-   Swap arr[0] and arr[1].
-
-   Output:
-   {2, 1}
-
-
-4. ODD NUMBER OF ELEMENTS:
-   arr = {1, 2, 3, 4, 5}
-
-   The middle element remains in its original position.
-
-   Output:
-   {5, 4, 3, 2, 1}
-
-
-5. EVEN NUMBER OF ELEMENTS:
+3. ALREADY SORTED:
    arr = {1, 2, 3, 4}
 
-   The pointers cross after the necessary swaps.
+   Output: true
 
-   Output:
-   {4, 3, 2, 1}
+
+4. DESCENDING ARRAY:
+   arr = {5, 4, 3, 2, 1}
+
+   Output: false
+
+   The first pair already violates the condition.
+
+
+5. DUPLICATE ELEMENTS:
+   arr = {1, 1, 2, 2, 3}
+
+   Output: true
+
+   Equal adjacent elements are allowed.
+
+
+6. NEGATIVE NUMBERS:
+   arr = {-5, -3, -1, 0, 2}
+
+   Output: true
+
+   Negative values are handled normally.
 
 
 ==========================================================
-WHY DOES THE BASE CASE USE start >= end?
+WHY DO WE USE arr[i] > arr[i + 1]?
 ==========================================================
 
-There are two situations:
+The problem requires non-decreasing order.
 
-1. start == end:
-   Both pointers point to the same middle element.
-   No swap is required.
+For every adjacent pair, we need:
 
-2. start > end:
-   The pointers have crossed.
-   All required swaps have already been completed.
+arr[i] <= arr[i + 1]
 
-Therefore, start >= end correctly terminates recursion.
+If this condition is violated, then:
+
+arr[i] > arr[i + 1]
+
+Therefore, we return false as soon as we find such a pair.
+
+Notice that we do not use >= because duplicate elements
+are allowed in a non-decreasing array.
 
 ==========================================================
 TIME AND SPACE COMPLEXITY:
 ==========================================================
 
-Time Complexity: O(n)
-- Approximately n / 2 swaps are performed.
-- Each recursive call performs constant work.
+Time Complexity:
+- Best case: O(1), if the first pair is out of order.
+- Worst case: O(n), if the entire array must be checked.
 
 Auxiliary Space Complexity: O(n)
-- Recursive calls use the call stack.
-- The maximum recursion depth is approximately n / 2.
+- Recursive calls occupy the call stack.
+- The maximum recursion depth is proportional to n.
 
 ==========================================================
 KEY LEARNINGS:
 ==========================================================
 
-1. Recursion can be combined with the two-pointer technique.
-2. Swapping the outer elements reverses their positions.
-3. Moving both pointers inward reduces the problem size.
-4. The middle element does not need to be swapped.
-5. The array is modified in place; no second array is needed.
-6. Passing the array by reference allows changes to persist.
-7. The recursive call stack uses O(n) auxiliary space.
+1. An array is sorted if every adjacent pair is ordered.
+2. Recursion can check one adjacent pair per call.
+3. Returning false immediately avoids unnecessary calls.
+4. Equal adjacent values are valid in non-decreasing order.
+5. Empty and single-element arrays are sorted.
+6. Recursive calls use stack space proportional to n.
 
 ==========================================================
 */
